@@ -143,6 +143,7 @@
   /* each piece: tap to pick, then choose any number of colours */
   function picked(){return picks.filter(function(p){return p.classList.contains('is-on')})}
   function colsOf(p){return [].slice.call(p.querySelectorAll('.wl__col[aria-pressed="true"]'))}
+  function sizeOf(p){return p.querySelector('.wl__size[aria-pressed="true"]')}
   function updateCount(){
     if(!countEl)return;
     var n=picked().length;
@@ -172,6 +173,9 @@
       if(!on){
         colsOf(p).forEach(function(c){c.setAttribute('aria-pressed','false')});
         refreshColName(p);swapImg(p,key+'-black');
+        var szBtnsReset=[].slice.call(p.querySelectorAll('.wl__size')),szLabelReset=p.querySelector('.wl__sizename');
+        szBtnsReset.forEach(function(x){x.setAttribute('aria-pressed','false')});
+        if(szLabelReset){szLabelReset.textContent='Any size';szLabelReset.classList.remove('is-set')}
       }
       updateCount();
     });
@@ -187,12 +191,21 @@
       c.addEventListener('mouseenter',function(){swapImg(p,c.dataset.k)});
       c.addEventListener('mouseleave',function(){var sel=colsOf(p);swapImg(p,sel.length?sel[sel.length-1].dataset.k:key+'-black')});
     });
+    var szBtns=[].slice.call(p.querySelectorAll('.wl__size')),szLabel=p.querySelector('.wl__sizename');
+    szBtns.forEach(function(sz){
+      sz.addEventListener('click',function(){
+        var on=sz.getAttribute('aria-pressed')!=='true';
+        szBtns.forEach(function(x){x.setAttribute('aria-pressed',x===sz&&on?'true':'false')});
+        if(on&&!p.classList.contains('is-on')){p.classList.add('is-on');btn.setAttribute('aria-pressed','true');updateCount()}
+        if(szLabel){szLabel.textContent=on?sz.dataset.sz:'Any size';szLabel.classList.toggle('is-set',on)}
+      });
+    });
   });
 
   function gather(){
     return picked().map(function(p){
-      var sel=colsOf(p);
-      return {item:p.dataset.item,cols:sel.map(function(c){return c.dataset.col}),hex:sel.map(function(c){return c.style.getPropertyValue('--c')})};
+      var sel=colsOf(p),szEl=sizeOf(p);
+      return {item:p.dataset.item,cols:sel.map(function(c){return c.dataset.col}),hex:sel.map(function(c){return c.style.getPropertyValue('--c')}),size:szEl?szEl.dataset.sz:''};
     });
   }
 
@@ -201,7 +214,7 @@
     if(!currentEmail)return;
     setBusy(true);
     sm.className='wl__msg';sm.textContent='Adding you…';
-    var lines=choices.length?choices.map(function(c){return '  • '+c.item+' — '+(c.cols.length?c.cols.join(', '):'any colour')}).join('\n'):'  No preference specified';
+    var lines=choices.length?choices.map(function(c){return '  • '+c.item+' — '+(c.cols.length?c.cols.join(', '):'any colour')+' — '+(c.size||'any size')}).join('\n'):'  No preference specified';
     fetch('https://api.web3forms.com/submit',{
       method:'POST',
       headers:{'content-type':'application/json','accept':'application/json'},
@@ -245,6 +258,7 @@
             li.appendChild(dots);
           }
           li.appendChild(document.createTextNode(c.item));
+          if(c.size){var szTag=document.createElement('span');szTag.className='wl__donesize';szTag.textContent=c.size;li.appendChild(szTag)}
           list.appendChild(li);
         });
       }
@@ -435,6 +449,20 @@
       btn.setAttribute('aria-pressed','true');
     });
   });
+
+  // The Set / The Zip Set are bundles - the mannequin shot (both pieces worn
+  // together) is more useful as the first thing shown than the flat lay, so
+  // open those two cards straight into the "on model" view by default.
+  document.querySelectorAll('.pc--set').forEach(function(card){
+    var media=card.querySelector('.pc__media'),btn=card.querySelector('.pc__preview');
+    if(!media||!btn)return;
+    applyPreviewSrc(card);
+    media.classList.add('is-mnq');
+    btn.classList.add('is-on');
+    btn.textContent='Back to flat shot';
+    btn.setAttribute('aria-pressed','true');
+  });
+
 
   // switching colour, front/back, or which beanie while a preview is open used to
   // drop back to the flat shot - now it just swaps in the matching mannequin shot
