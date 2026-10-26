@@ -12,14 +12,13 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:title" content="NO.06">
 <meta property="og:description" content="Drop 01 — limited run. not for everyone.">
-<meta property="og:image" content="https://wearno06.com/media/og-drop01.jpg">
+<meta property="og:image" content="https://wearno06.com/media/og.jpg">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://wearno06.com/media/og-drop01.jpg">
 <link rel="preload" href="fonts/michroma.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="media/ed/e1k.webp" as="image">
-<link rel="stylesheet" href="styles.css?v=74">
+<link rel="stylesheet" href="styles.css?v=76">
 <script src="boot.js"></script>
 </head>
 <body>
@@ -31,10 +30,22 @@
     <span class="bar__motto">Not for everyone</span>
   </div>
   <nav class="bar__nav" aria-label="Main">
+    <button type="button" id="size-guide-btn" class="bar__sizebtn" aria-haspopup="dialog" aria-controls="size-guide-modal">Size Guide</button>
     <a href="#collection">Drop 01</a>
     <a href="#waitlist">Early Access</a>
   </nav>
 </header>
+
+<div id="size-guide-modal" class="sg" hidden>
+  <div class="sg__backdrop" data-sg-close tabindex="-1"></div>
+  <div class="sg__panel" role="dialog" aria-modal="true" aria-labelledby="sg-title">
+    <button type="button" class="sg__close" data-sg-close aria-label="Close size guide">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <p id="sg-title" class="sr">NO.06 size guide</p>
+    <img class="sg__img" src="media/size-guide.png" alt="NO.06 size guide. Hoodies and zips — Panel, Zip 10, Zip Crew: S chest 22 length 27 sleeve 24; M chest 23.5 length 28 sleeve 24.5; L chest 25 length 29 sleeve 25; XL chest 26.5 length 30 sleeve 25.5. Tee: S chest 20 length 27.5; M chest 21.5 length 28.5; L chest 23 length 29.5; XL chest 24.5 length 30.5. Wide-leg sweatpants: S waist 28-30 inseam 30 leg opening 11; M waist 30-32 inseam 30.5 leg opening 11.5; L waist 32-34 inseam 31 leg opening 12; XL waist 34-36 inseam 31.5 leg opening 12.5. Beanie 02 is one size. Fits run boxy and oversized; size down if between sizes. Measurements are approximate and may vary about 1 inch.">
+  </div>
+</div>
 
 <main id="top">
   <section class="hero" aria-label="NO.06">
@@ -381,6 +392,6 @@
   <nav class="foot__links" aria-label="Legal"><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds</a><a href="privacy-policy.html">Privacy</a><a href="cookie-policy.html">Cookies</a><span>© 2026</span></nav>
 </footer>
 
-<script src="script.js?v=41" defer></script>
+<script src="script.js?v=42" defer></script>
 </body>
 </html>
