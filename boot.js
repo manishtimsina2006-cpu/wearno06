@@ -1,0 +1,1 @@
+(function(d,w){d.classList.add('js');try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('rm')}catch(e){}try{if('scrollRestoration' in history)history.scrollRestoration='manual'}catch(e){}try{w.scrollTo(0,0)}catch(e){}w.addEventListener('pageshow',function(ev){if(ev.persisted)try{w.scrollTo(0,0)}catch(e){}});})(document.documentElement,window);
